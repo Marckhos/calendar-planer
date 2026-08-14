@@ -1,5 +1,5 @@
 window.AGENDA_CONFIG = {
-  supabaseUrl: "COLE_AQUI_A_URL_DO_SUPABASE",
-  supabasePublishableKey: "COLE_AQUI_A_CHAVE_PUBLICAVEL_DO_SUPABASE",
+  supabaseUrl: "https://yaqgietuszjeywvebygy.supabase.co/rest/v1/",
+  supabasePublishableKey: "sb_publishable_A5jaFP4esiPxEsjfKv6XLg_pow45vJq",
   loginDomain: "agenda.local"
 };
