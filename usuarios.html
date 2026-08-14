@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Colaboradores — Agenda Fácil</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="users">
+  <header class="topbar">
+    <a class="brand" href="index.html"><span class="brand-mark"><i></i></span><span><strong>Agenda Fácil</strong><small>Área administrativa</small></span></a>
+    <nav class="main-nav"><a href="index.html">Calendário</a><a class="active" href="usuarios.html" data-admin>Colaboradores</a><a href="historico.html" data-admin>Histórico</a></nav>
+    <div class="session-actions"><span class="role-badge admin" id="roleBadge">Administrador</span><button class="btn btn-ghost" id="passwordBtn" data-auth>Minha senha</button><button class="btn btn-ghost" id="logoutBtn" data-auth>Sair</button></div>
+  </header>
+  <div class="setup-banner" id="setupBanner" hidden><strong>Modo de demonstração.</strong> Configure o Supabase no arquivo <code>config.js</code>.</div>
+  <main class="admin-shell">
+    <section class="page-heading"><div><p class="eyebrow">CONTROLE DE ACESSO</p><h1>Colaboradores</h1><p>Cadastre pessoas, desative temporariamente o acesso ou exclua contas. Todas essas ações ficam registradas no histórico.</p></div><button class="btn btn-primary" id="openUserForm">＋ Novo colaborador</button></section>
+    <section class="stats-row"><article><span id="userCount">0</span><small>colaboradores cadastrados</small></article><article><span id="activeUserCount">0</span><small>contas ativas</small></article><article><span id="inactiveUserCount">0</span><small>contas desativadas</small></article></section>
+    <section class="panel table-panel">
+      <div class="table-heading"><div><p class="section-label">USUÁRIOS CADASTRADOS</p><h2>Gerenciar colaboradores</h2></div><input id="userSearch" type="search" placeholder="Pesquisar ID ou nome"></div>
+      <div class="user-list" id="userList"></div>
+    </section>
+    <section class="access-denied" id="accessDenied" hidden><h2>Acesso exclusivo do administrador</h2><p>Seu usuário não possui permissão para visualizar esta página.</p><a class="btn btn-primary" href="index.html">Voltar ao calendário</a></section>
+  </main>
+
+  <dialog id="userModal">
+    <div class="modal-header"><div><p class="section-label">NOVO ACESSO</p><h2>Cadastrar colaborador</h2></div><button class="close" data-close="userModal">×</button></div>
+    <form id="userForm">
+      <label>ID para entrar<input id="newUserId" required minlength="3" maxlength="30" pattern="[a-zA-Z0-9._-]+" placeholder="Ex.: maria.silva"></label>
+      <label>Nome completo<input id="newUserName" required maxlength="100" placeholder="Ex.: Maria Silva"></label>
+      <label>Senha inicial<input id="newUserPassword" type="password" required minlength="8" autocomplete="new-password"></label>
+      <p class="form-note">O colaborador poderá trocar essa senha depois de entrar. A senha não ficará visível nesta lista.</p>
+      <p class="error" id="userError"></p><p class="success" id="userSuccess"></p>
+      <div class="form-actions"><button type="button" class="btn btn-ghost" data-close="userModal">Cancelar</button><button type="submit" class="btn btn-primary">Criar colaborador</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="passwordModal">
+    <div class="modal-header"><div><p class="section-label">SEGURANÇA</p><h2>Alterar minha senha</h2></div><button class="close" data-close="passwordModal">×</button></div>
+    <form id="passwordForm"><label>Nova senha<input id="newPassword" type="password" minlength="8" required></label><label>Confirmar senha<input id="confirmPassword" type="password" minlength="8" required></label><p class="error" id="passwordError"></p><p class="success" id="passwordSuccess"></p><div class="form-actions"><button type="button" class="btn btn-ghost" data-close="passwordModal">Cancelar</button><button class="btn btn-primary">Atualizar senha</button></div></form>
+  </dialog>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="config.js"></script><script src="app.js"></script>
+</body>
+</html>

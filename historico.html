@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Histórico — Agenda Fácil</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="history">
+  <header class="topbar">
+    <a class="brand" href="index.html"><span class="brand-mark"><i></i></span><span><strong>Agenda Fácil</strong><small>Área administrativa</small></span></a>
+    <nav class="main-nav"><a href="index.html">Calendário</a><a href="usuarios.html" data-admin>Colaboradores</a><a class="active" href="historico.html" data-admin>Histórico</a></nav>
+    <div class="session-actions"><span class="role-badge admin" id="roleBadge">Administrador</span><button class="btn btn-ghost" id="passwordBtn" data-auth>Minha senha</button><button class="btn btn-ghost" id="logoutBtn" data-auth>Sair</button></div>
+  </header>
+  <div class="setup-banner" id="setupBanner" hidden><strong>Modo de demonstração.</strong> Configure o Supabase no arquivo <code>config.js</code>.</div>
+  <main class="admin-shell">
+    <section class="page-heading"><div><p class="eyebrow">AUDITORIA</p><h1>Histórico dos últimos 30 dias</h1><p>Registros de agendamentos e de alterações nas contas dos colaboradores. Itens antigos são removidos automaticamente.</p></div><button class="btn btn-ghost" id="refreshHistory">↻ Atualizar</button></section>
+    <section class="stats-row"><article><span id="historyCount">0</span><small>ações registradas</small></article><article><span>30 dias</span><small>tempo de retenção</small></article><article><span>Automático</span><small>processo de limpeza</small></article></section>
+    <section class="panel history-panel"><div class="history-filters"><button class="active" data-history-filter="all">Todos</button><button data-history-filter="appointments">Agendamentos</button><button data-history-filter="collaborators">Colaboradores</button><button data-history-filter="insert">Criações</button><button data-history-filter="update">Alterações</button><button data-history-filter="delete">Exclusões de agendamento</button></div><div class="history-list" id="historyList"></div></section>
+    <section class="access-denied" id="accessDenied" hidden><h2>Acesso exclusivo do administrador</h2><p>Seu usuário não possui permissão para visualizar esta página.</p><a class="btn btn-primary" href="index.html">Voltar ao calendário</a></section>
+  </main>
+  <dialog id="passwordModal"><div class="modal-header"><div><p class="section-label">SEGURANÇA</p><h2>Alterar minha senha</h2></div><button class="close" data-close="passwordModal">×</button></div><form id="passwordForm"><label>Nova senha<input id="newPassword" type="password" minlength="8" required></label><label>Confirmar senha<input id="confirmPassword" type="password" minlength="8" required></label><p class="error" id="passwordError"></p><p class="success" id="passwordSuccess"></p><div class="form-actions"><button type="button" class="btn btn-ghost" data-close="passwordModal">Cancelar</button><button class="btn btn-primary">Atualizar senha</button></div></form></dialog>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="config.js"></script><script src="app.js"></script>
+</body>
+</html>

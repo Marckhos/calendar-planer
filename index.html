@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Agenda compartilhada com calendário, usuários e histórico.">
+  <title>Agenda Fácil</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="calendar">
+  <header class="topbar">
+    <a class="brand" href="index.html">
+      <span class="brand-mark" aria-hidden="true"><i></i></span>
+      <span><strong>Agenda Fácil</strong><small>Agenda compartilhada</small></span>
+    </a>
+    <nav class="main-nav" aria-label="Navegação principal">
+      <a class="active" href="index.html">Calendário</a>
+      <a href="usuarios.html" data-admin hidden>Colaboradores</a>
+      <a href="historico.html" data-admin hidden>Histórico</a>
+    </nav>
+    <div class="session-actions">
+      <span class="role-badge visitor" id="roleBadge">Visitante</span>
+      <button class="btn btn-ghost" id="loginBtn">Entrar</button>
+      <button class="btn btn-ghost" id="passwordBtn" data-auth hidden>Minha senha</button>
+      <button class="btn btn-ghost" id="logoutBtn" data-auth hidden>Sair</button>
+      <button class="btn btn-primary" id="newBtn" data-scheduler hidden>＋ Novo agendamento</button>
+    </div>
+  </header>
+
+  <div class="setup-banner" id="setupBanner" hidden>
+    <strong>Modo de demonstração.</strong>
+    Configure o Supabase no arquivo <code>config.js</code> para ativar a sincronização.
+  </div>
+
+  <section class="hero">
+    <div><p class="eyebrow">AGENDA EM TEMPO REAL</p><h1>Todos no mesmo calendário.<br><em>De qualquer lugar.</em></h1></div>
+    <p class="hero-copy">Clique em um dia para conferir todos os horários. Administradores e colaboradores podem entrar com ID e senha.</p>
+  </section>
+
+  <main class="workspace">
+    <section class="panel">
+      <div class="toolbar">
+        <div><p class="section-label">VISÃO MENSAL</p><h2 id="monthTitle"></h2></div>
+        <div class="month-controls">
+          <button id="todayBtn">Hoje</button>
+          <button id="prevBtn" aria-label="Mês anterior">←</button>
+          <button id="nextBtn" aria-label="Próximo mês">→</button>
+        </div>
+      </div>
+      <div class="week"><span>DOM</span><span>SEG</span><span>TER</span><span>QUA</span><span>QUI</span><span>SEX</span><span>SÁB</span></div>
+      <div class="calendar" id="calendar"></div>
+      <p class="hint">Clique em qualquer dia para ver todos os agendamentos.</p>
+    </section>
+
+    <aside class="panel details-panel">
+      <div class="selected-heading"><p class="section-label">DIA SELECIONADO</p><h2 id="selectedTitle"></h2></div>
+      <div class="day-list" id="dayList"></div>
+      <button class="add-day" id="addSelectedBtn" data-scheduler hidden>＋ Agendar neste dia</button>
+      <div class="upcoming">
+        <div class="upcoming-title"><h3>Próximos</h3><span id="totalLabel"></span></div>
+        <div id="upcomingList"></div>
+      </div>
+    </aside>
+  </main>
+
+  <footer><strong>Agenda Fácil</strong><p id="syncStatus">Conectando à agenda compartilhada…</p></footer>
+
+  <dialog id="loginModal">
+    <div class="modal-header"><div><p class="section-label">ACESSO RESTRITO</p><h2>Entrar na agenda</h2></div><button class="close" data-close="loginModal" aria-label="Fechar">×</button></div>
+    <form id="loginForm">
+      <label>ID do usuário<input id="loginId" required autocomplete="username" placeholder="Ex.: colaborador01"></label>
+      <label>Senha<input id="loginPassword" type="password" required autocomplete="current-password" placeholder="Digite sua senha"></label>
+      <p class="form-note">Visitantes não precisam entrar para visualizar o calendário.</p>
+      <p class="error" id="loginError" role="alert"></p>
+      <div class="form-actions"><button type="button" class="btn btn-ghost" data-close="loginModal">Cancelar</button><button class="btn btn-primary" type="submit">Entrar</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="appointmentModal">
+    <div class="modal-header"><div><p class="section-label" id="appointmentLabel">NOVO HORÁRIO</p><h2 id="appointmentTitle">Adicionar agendamento</h2></div><button class="close" data-close="appointmentModal" aria-label="Fechar">×</button></div>
+    <form id="appointmentForm">
+      <label>Nome do compromisso<input id="appointmentName" maxlength="80" required placeholder="Ex.: Reunião da equipe"></label>
+      <label>Descrição<textarea id="appointmentDescription" maxlength="500" rows="3" placeholder="Informações sobre o compromisso"></textarea></label>
+      <div class="form-row"><label>Data<input id="appointmentDate" type="date" required></label><label>Início<input id="appointmentStart" type="time" required></label><label>Fim<input id="appointmentEnd" type="time" required></label></div>
+      <fieldset><legend>Cor da marcação</legend><div class="colors"><button type="button" class="color active" data-color="terracotta" aria-label="Terracota"><i></i></button><button type="button" class="color" data-color="blue" aria-label="Azul"><i></i></button><button type="button" class="color" data-color="green" aria-label="Verde"><i></i></button></div></fieldset>
+      <p class="form-note">É permitido cadastrar mais de um compromisso no mesmo horário.</p>
+      <p class="error" id="appointmentError" role="alert"></p>
+      <div class="form-actions"><button type="button" class="btn btn-ghost" data-close="appointmentModal">Cancelar</button><button class="btn btn-primary" id="appointmentSaveBtn" type="submit">Salvar agendamento</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="passwordModal">
+    <div class="modal-header"><div><p class="section-label">SEGURANÇA</p><h2>Alterar minha senha</h2></div><button class="close" data-close="passwordModal" aria-label="Fechar">×</button></div>
+    <form id="passwordForm">
+      <label>Nova senha<input id="newPassword" type="password" minlength="8" required autocomplete="new-password"></label>
+      <label>Confirmar nova senha<input id="confirmPassword" type="password" minlength="8" required autocomplete="new-password"></label>
+      <p class="form-note">Use pelo menos 8 caracteres. A senha nunca é exibida aos administradores.</p>
+      <p class="error" id="passwordError" role="alert"></p>
+      <p class="success" id="passwordSuccess" role="status"></p>
+      <div class="form-actions"><button type="button" class="btn btn-ghost" data-close="passwordModal">Cancelar</button><button class="btn btn-primary" type="submit">Atualizar senha</button></div>
+    </form>
+  </dialog>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
