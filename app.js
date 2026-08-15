@@ -138,9 +138,9 @@
     const badge = $("roleBadge");
     if (badge) {
       const role = roleLabel(currentProfile?.role);
-     badge.textContent = currentProfile
-  ? currentProfile.login_id
-  : "Visitante";
+         badge.textContent = currentProfile
+      ? login_id
+      : "Visitante";
       badge.className = "role-badge "+roleClass(currentProfile?.role);
       badge.title = currentProfile ? currentProfile.full_name+" · ID: "+currentProfile.login_id : "Acesso somente para visualização";
     }
