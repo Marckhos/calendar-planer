@@ -139,7 +139,7 @@
     if (badge) {
       const role = roleLabel(currentProfile?.role);
          badge.textContent = currentProfile
-      ? login_id
+      ? full_name
       : "Visitante";
       badge.className = "role-badge "+roleClass(currentProfile?.role);
       badge.title = currentProfile ? currentProfile.full_name+" · ID: "+currentProfile.login_id : "Acesso somente para visualização";
