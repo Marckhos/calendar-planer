@@ -139,7 +139,7 @@
     if (badge) {
       const role = roleLabel(currentProfile?.role);
          badge.textContent = currentProfile
-     badge.textContent = currentProfile
+     badge.textContent = currentProfile;
       ? currentProfile.full_name
       : "Visitante";
       badge.className = "role-badge "+roleClass(currentProfile?.role);
